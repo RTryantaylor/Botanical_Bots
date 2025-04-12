@@ -1,30 +1,57 @@
-// Pin Definitions
-#define LED_PIN     2     // Onboard LED
-#define BUTTON_PIN  9     // Change if needed
-#define ADC_PIN     0     // GPIO0 maps to ADC1_CH0
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+// ====== WiFi Credentials ======
+const char* ssid     = "CRUZHACKS";
+const char* password = "cruzhacks1234";
+
+// ====== HTTP GET Endpoint ======
+const char* serverName = "http://your-server-address/api/plant";
 
 void setup() {
   Serial.begin(115200);
-  pinMode(LED_PIN, OUTPUT);
-  pinMode(BUTTON_PIN, INPUT_PULLUP); // assumes button to GND
+
+  // Connect to WiFi
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\n✅ Connected to WiFi!");
 }
 
 void loop() {
-  int buttonState = digitalRead(BUTTON_PIN);
-  int adcValue = analogRead(ADC_PIN); // 0-4095 on ESP32
-  float voltage = adcValue * (3.3 / 4095.0); // Assuming 3.3V reference
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(serverName);
+    http.addHeader("Content-Type", "application/json");
 
-  // Print values
-  Serial.print("Button: ");
-  Serial.print(buttonState == LOW ? "Pressed" : "Released");
-  Serial.print(" | ADC: ");
-  Serial.print(adcValue);
-  Serial.print(" | Voltage: ");
-  Serial.print(voltage, 3);
-  Serial.println(" V");
+    // Create JSON payload
+    StaticJsonDocument<256> jsonDoc;
+    jsonDoc["moisture"] = random(600, 800);   // Replace with analogRead()
+    jsonDoc["ph"] = 6.3 + random(-10, 10) * 0.01; // Simulate pH
+    jsonDoc["temp"] = 23 + random(-5, 5);     // Simulate temperature
+    jsonDoc["light"] = random(400, 800);      // Simulate light
 
-  // Control LED with button
-  digitalWrite(LED_PIN, buttonState == LOW ? HIGH : LOW);
+    String requestBody;
+    serializeJson(jsonDoc, requestBody);
 
-  delay(500);
+    int httpResponseCode = http.POST(requestBody);
+
+    if (httpResponseCode > 0) {
+      String response = http.getString();
+      Serial.print("✅ Response: ");
+      Serial.println(response);
+    } else {
+      Serial.print("❌ Error sending POST: ");
+      Serial.println(httpResponseCode);
+    }
+
+    http.end();
+  } else {
+    Serial.println("⚠️ Not connected to WiFi.");
+  }
+
+  delay(5000);  // Send every 5 seconds
 }
