@@ -50,11 +50,21 @@ def put_sensor_data():
 @app.route("/get_today_graph", methods=['GET'])
 def get_todays_graph_entries():
     """
-    Called by frontend returns values for each variable for each hour
+    Called by frontend returns values for each variable for each hour for today
     """
     with open("jsons/todays_sensor_data.json", 'r') as f:
         j_data = json.load(f)
     
+    return j_data
+
+@app.route("/get_week_graph", methods=['GET'])
+def get_weeks_graph_entries():
+    """
+    Called by frontend returns values for each variable for each day in a week
+    """
+    with open("jsons/weeks_sensor_data.json", 'r') as f:
+        j_data = json.load(f)
+
     return j_data
 
 if __name__ == "__main__":

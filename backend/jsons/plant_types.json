@@ -1,0 +1,11 @@
+{
+    "bamboo": {
+        "moisture": 56
+    },
+    "cactus": {
+        "moisture": 100
+    },
+    "parsley": {
+        "moisture": 430
+    }
+}
