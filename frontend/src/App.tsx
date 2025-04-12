@@ -5,7 +5,7 @@ import axios from "axios";
 import NavHeader from "./NavHeader";
 import HomeScreen from './HomeScreenComps/HomeScreen';
 import InformationScreen from './InformationScreenComps/InformationScreen';
-import SomethingScreen from './SomethingScreenComps/SomethingScreen';
+import GraphScreen from './GraphScreenComps/GraphScreen';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState("Home");
@@ -13,8 +13,8 @@ function App() {
     switch (currentScreen) {
       case "Home":
         return <HomeScreen />;
-      case "Something":
-        return <SomethingScreen />;
+      case "Graphs":
+        return <GraphScreen />;
       case "Information":
         return <InformationScreen />;
       default:

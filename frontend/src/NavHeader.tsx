@@ -9,7 +9,7 @@ const NavHeader = ({ onNavigate }: { onNavigate: (screen: string) => void }) => 
       </nav>
       <div className="nav-right">
         <span className="nav-item" onClick={() => onNavigate("Home")}>Home</span>
-        <span className="nav-item" onClick={() => onNavigate("Something")}>Something</span>
+        <span className="nav-item" onClick={() => onNavigate("Graphs")}>Graphs</span>
         <span className="nav-item" onClick={() => onNavigate("Information")}>Information</span>
       </div>
     </header>

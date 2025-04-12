@@ -29,13 +29,14 @@ function HomeScreen() {
   return (
     <div className="whole-screen-flex">
       <div className="right-screen-flex">
+        <img src="plant.webp" alt="Plant Image" width="300" height="400" />
         <PlantSelector />
       </div>
       <div className="left-screen-flex">
-        <div>Temperature:{sensorData.temp}</div>
-        <div>PH:{sensorData.ph}</div>
-        <div>Moisture:{sensorData.moisture}</div>
-        <div>Light:{sensorData.light}</div>
+        <div><b>Temperature:</b> {sensorData.temp}</div>
+        <div><b>PH:</b> {sensorData.ph}</div>
+        <div><b>Moisture:</b> {sensorData.moisture}</div>
+        <div><b>Light:</b> {sensorData.light}</div>
       </div>
     </div>
   );

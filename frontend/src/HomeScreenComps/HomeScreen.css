@@ -11,3 +11,11 @@
     flex-direction: column;
     padding: 1rem;
 }
+
+.left-screen-flex {
+    gap: 10px;
+}
+
+.plant-selector {
+    max-width: 400px;
+}
