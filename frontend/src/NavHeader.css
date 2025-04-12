@@ -1,0 +1,30 @@
+.nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1a1a;
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-left {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.nav-item {
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.nav-item:hover {
+    color: #00ff99;
+}
+
+.nav-right {
+    display: flex;
+    gap: 12rem;
+    margin-right: 10rem;
+}

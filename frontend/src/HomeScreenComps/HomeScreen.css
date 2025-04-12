@@ -1,0 +1,13 @@
+.whole-screen-flex {
+    display: flex;
+    height: 100vh;
+    padding: 1rem;
+}
+
+.left-screen-flex,
+.right-screen-flex {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
