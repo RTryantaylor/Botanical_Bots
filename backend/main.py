@@ -3,6 +3,8 @@ from flask_cors import CORS
 
 import json
 
+from graph_sensor_data import graph_sensor_data
+
 
 app = Flask(__name__)
 CORS(app)  # Allows requests from React
@@ -15,7 +17,7 @@ def get_sensor_data():
     returns: latest sensor data from local json
     """
 
-    with open("sensor_data.json", "r") as f:
+    with open("jsons/latest_sensor_data.json", "r") as f:
         data = json.load(f)
     
     return data
@@ -25,10 +27,11 @@ def get_sensor_data():
 def put_sensor_data():
     r_data = request.get_json()
 
+    graph_sensor_data(r_data)
     print("data:", r_data)
 
     # opens local json
-    with open("sensor_data.json", "r") as f:
+    with open("jsons/latest_sensor_data.json", "r") as f:
         j_data = json.load(f)
 
     # moves data from request json to local json
@@ -38,11 +41,21 @@ def put_sensor_data():
     j_data["light"] = r_data.get("light")
 
     # writes new data to local json
-    with open("sensor_data.json", "w") as f:
+    with open("jsons/latest_sensor_data.json", "w") as f:
         json.dump(j_data, f, indent=4)
 
     return jsonify({"status": "OK"}), 200
 
+
+@app.route("/get_today_graph", methods=['GET'])
+def get_todays_graph_entries():
+    """
+    Called by frontend returns values for each variable for each hour
+    """
+    with open("jsons/todays_sensor_data.json", 'r') as f:
+        j_data = json.load(f)
+    
+    return j_data
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True, port=8085)
