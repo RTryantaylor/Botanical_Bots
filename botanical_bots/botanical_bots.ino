@@ -9,10 +9,22 @@ const char* password = "cruzhacks1234";
 // ====== HTTP GET Endpoint ======
 const char* serverName = "http://192.168.1.197:8008/put_sensor_data";
 
-const int moistureThreshold = 500;
-const unsigned long moistureTimer = 10000;
-bool watering = 0;
-const unsigned long startTime = 0
+unsigned long sensorReadTimer = 0;
+const unsigned long sensorReadThreshold = 5000; 
+
+unsigned long dataSendTimer = 0;
+const unsigned long dataSendInterval = 10000; 
+
+unsigned long dataGetTimer = 0;
+const unsigned long dataGetInterval = 15000;
+
+unsigned long now = 0;
+
+// Sensor Values
+int moisture = 0;
+int ph = 0;
+int temp = 0;
+int light = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -28,73 +40,90 @@ void setup() {
 }
 
 void loop() {
-  if (WiFi.status() == WL_CONNECTED) {
-    HTTPClient http;
-    http.begin(serverName);
-    http.addHeader("Content-Type", "application/json");
+  now = millis();
 
-    // Get current moisture levels
-    int currentMoisture = readMoisture();
-
-    // Check to send water
-    waterControl(currentMoisture);
-
-    // Create JSON payload
-    StaticJsonDocument<256> jsonDoc;
-    jsonDoc["moisture"] = currentMoisture;
-    jsonDoc["ph"] = 6.3 + random(-10, 10) * 0.01;
-    jsonDoc["temp"] = 23 + random(-5, 5);
-    jsonDoc["light"] = random(400, 800);
-
-    String requestBody;
-    serializeJson(jsonDoc, requestBody);
-
-    // 🔁 Use PUT request
-    int httpResponseCode = http.sendRequest("PUT", requestBody);
-
-    if (httpResponseCode > 0) {
-      String response = http.getString();
-      Serial.print("✅ Response: ");
-      Serial.println(response);
-    } else {
-      Serial.print("❌ Error sending PUT: ");
-      Serial.println(httpResponseCode);
-    }
-
-    http.end();
-  } else {
-    Serial.println("⚠️ Not connected to WiFi.");
+  if (now - sensorReadTimer >= sensorReadThreshold) {
+    sensorReadTimer = now;
+    moisture = readMoisture();
+    ph = readPh();
+    temp = readTemp();
+    light = readLight();
   }
 
-  delay(1000);  // Wait 5 seconds before next update
+  // === Timer 2: Send data ===
+  if (now - dataSendTimer >= dataSendInterval) {
+    dataSendTimer = now;
+    sendSensorData();
+  }
+
+  // === Timer 3: Get data ===
+  // if (now - dataGetTimer >= dataGetInterval) {
+  //   dataSendTimer = now;
+  //   getData();
+  // }
+
+  delay(10);
+}
+
+// HTTP Functions
+
+void sendSensorData() {
+  if (WiFi.status() != WL_CONNECTED) return;
+
+  HTTPClient http;
+  http.begin(serverName);
+  http.addHeader("Content-Type", "application/json");
+
+  StaticJsonDocument<256> jsonDoc;
+  jsonDoc["moisture"] = moisture;
+  jsonDoc["ph"] = ph;
+  jsonDoc["temp"] = temp;
+  jsonDoc["light"] = light;
+
+  String body;
+  serializeJson(jsonDoc, body);
+
+  int code = http.sendRequest("PUT", body);
+  if (code > 0) {
+    Serial.print("✅ Server response: ");
+    Serial.println(http.getString());
+  } else {
+    Serial.print("❌ HTTP error: ");
+    Serial.println(code);
+  }
+  http.end();
 }
 
 // Reading Functions
 
 int readMoisture() {
   // Replace with actual analogRead
-  // int val = analogRead(1); // or whatever pin you're using
-  int val = 400;
-  Serial.print("🌱 Moisture: ");
+  int val = random(400, 800);
+  Serial.print("Moisture: ");
   Serial.println(val);
   return val;
 }
 
-// Water Controls
-
-int waterControl(int moistureLevel) {
-  // send water
-  if ((moistureLevel < moistureThreshold) && !watering) {
-    Serial.println("Watering started.");
-    sendWater();
-    watering = 1;
-    startTime = millis();
-  }
-  if (watering && (millis() - startTime >= 5000)) {
-    watering = 0;
-  }
+int readPh() {
+  // Replace with actual analogRead
+  int val = 6.3 + random(-10, 10) * 0.01;
+  Serial.print("PH: ");
+  Serial.println(val);
+  return val;
 }
 
-void sendWater(){
-  Serial.println("Water Sent!");
+int readTemp() {
+  // Replace with actual analogRead
+  int val = 23 + random(-5, 5);
+  Serial.print("Temp: ");
+  Serial.println(val);
+  return val;
+}
+
+int readLight() {
+  // Replace with actual analogRead
+  int val = random(400, 800);
+  Serial.print("Light: ");
+  Serial.println(val);
+  return val;
 }
