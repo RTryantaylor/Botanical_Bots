@@ -31,7 +31,7 @@ function App() {
   
   useEffect(() => {
     const fetchData = () => {
-      axios.get("http://192.168.1.197:8085/get_sensor_data")
+      axios.get("http://192.168.1.159:8085/get_sensor_data")
         .then(res => setSensorData(res.data))
         .catch(err => console.error("Error fetching sensor data:", err));
     };

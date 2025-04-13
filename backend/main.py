@@ -27,7 +27,6 @@ def get_sensor_data():
 def put_sensor_data():
     r_data = request.get_json()
 
-    graph_sensor_data(r_data)
     print("data:", r_data)
 
     # opens local json
@@ -37,12 +36,14 @@ def put_sensor_data():
     # moves data from request json to local json
     j_data["moisture"] = r_data.get("moisture")
     j_data["ph"] = r_data.get("ph")
-    j_data["temp"] = r_data.get("temp")
+    j_data["temp"] = (r_data.get("temp") * 9/5) + 32 # converting to fahrenheit
     j_data["light"] = r_data.get("light")
 
     # writes new data to local json
     with open("jsons/latest_sensor_data.json", "w") as f:
         json.dump(j_data, f, indent=4)
+
+    graph_sensor_data(j_data)
 
     return jsonify({"status": "OK"}), 200
 
@@ -66,6 +67,49 @@ def get_weeks_graph_entries():
         j_data = json.load(f)
 
     return j_data
+
+@app.route("/get_plant_types", methods=['GET'])
+def get_plant_types():
+    """
+    Called by frontend returns plant types and variable values
+    and currently selected plant
+    """
+    with open("jsons/plant_types.json", 'r') as f:
+        j_data = json.load(f)
+
+    return j_data
+
+@app.route("/set_selected_plant", methods=['PUT'])
+def set_selected_plant():
+    r_data = request.get_json()
+
+    # update local json
+    with open("jsons/plant_types.json", 'r') as f:
+        j_data = json.load(f)
+    
+    j_data["curr_selected"] = r_data.get("plant")
+
+    with open("jsons/plant_types.json", 'w') as f:
+        json.dump(j_data, f, indent=4)
+    
+    # send request to ESP32
+    # TODO...
+
+    return jsonify({"status": "OK"}), 200 
+
+@app.route("/get_selected_plant", methods=['GET'])
+def get_selected_plant():
+    with open("jsons/plant_types.json", 'r') as f:
+        j_data = json.load(f)
+    
+
+    plant_types = j_data.get("types", {})
+    for plant in plant_types:
+        if plant == j_data["curr_selected"]:
+            return {plant: j_data["plant"]}
+    
+    return {}
+    
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True, port=8085)

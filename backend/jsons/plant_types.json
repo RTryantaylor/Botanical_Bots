@@ -1,11 +1,105 @@
 {
-    "bamboo": {
-        "moisture": 56
-    },
-    "cactus": {
-        "moisture": 100
-    },
-    "parsley": {
-        "moisture": 430
+    "curr_selected": "jade_plant_mini",
+    "types": {
+        "thyme": {
+            "moisture": 50,
+            "ideal_min_temp": 65,
+            "ideal_max_temp": 80,
+            "ideal_sunlight": "Bright direct sunlight near south-facing window",
+            "description": "A woody herb with small leaves and a strong aroma",
+            "ideal_water": 15,
+            "ideal_min_ph": 5.5,
+            "ideal_max_ph": 7.0
+        },
+        "parsley": {
+            "moisture": 50,
+            "ideal_min_temp": 60,
+            "ideal_max_temp": 75,
+            "ideal_sunlight": "Indirect or filtered light, east/west-facing window",
+            "description": "A biennial herb used for garnish and flavoring",
+            "ideal_water": 25,
+            "ideal_min_ph": 5.0,
+            "ideal_max_ph": 7.0
+        },
+        "basil": {
+            "moisture": 50,
+            "ideal_min_temp": 70,
+            "ideal_max_temp": 90,
+            "ideal_sunlight": "Bright direct sunlight near south-facing window",
+            "description": "A fragrant culinary herb with bright green leaves",
+            "ideal_water": 30,
+            "ideal_min_ph": 5.5,
+            "ideal_max_ph": 6.5
+        },
+        "chives": {
+            "moisture": 50,
+            "ideal_min_temp": 60,
+            "ideal_max_temp": 75,
+            "ideal_sunlight": "Bright direct sunlight near south-facing window",
+            "description": "Grass-like herb with mild onion flavor",
+            "ideal_water": 20,
+            "ideal_min_ph": 6.0,
+            "ideal_max_ph": 7.0
+        },
+        "jade_plant_mini": {
+            "moisture": 50,
+            "ideal_min_temp": 65,
+            "ideal_max_temp": 75,
+            "ideal_sunlight": "Bright direct sunlight near south-facing window",
+            "description": "Small succulent with thick, glossy leaves",
+            "ideal_water": 5,
+            "ideal_min_ph": 6.1,
+            "ideal_max_ph": 6.5
+        },
+        "echeveria": {
+            "moisture": 50,
+            "ideal_min_temp": 60,
+            "ideal_max_temp": 80,
+            "ideal_sunlight": "Bright direct sunlight near south-facing window",
+            "description": "Compact rosette succulent, various colors",
+            "ideal_water": 5,
+            "ideal_min_ph": 6.0,
+            "ideal_max_ph": 7.0
+        },
+        "haworthia": {
+            "moisture": 50,
+            "ideal_min_temp": 60,
+            "ideal_max_temp": 80,
+            "ideal_sunlight": "Indirect or filtered light, east/west-facing window",
+            "description": "Small striped succulent, ideal for low light",
+            "ideal_water": 5,
+            "ideal_min_ph": 6.0,
+            "ideal_max_ph": 7.5
+        },
+        "african_violet": {
+            "moisture": 50,
+            "ideal_min_temp": 65,
+            "ideal_max_temp": 75,
+            "ideal_sunlight": "Indirect or filtered light, east/west-facing window",
+            "description": "Compact flowering plant with velvety leaves",
+            "ideal_water": 20,
+            "ideal_min_ph": 6.0,
+            "ideal_max_ph": 6.5
+        },
+        "begonia": {
+            "moisture": 50,
+            "ideal_min_temp": 60,
+            "ideal_max_temp": 75,
+            "ideal_sunlight": "Indirect or filtered light, east/west-facing window",
+            "description": "Colorful foliage and blooms, popular indoors",
+            "ideal_water": 20,
+            "ideal_min_ph": 5.5,
+            "ideal_max_ph": 6.2
+        },
+        "kalanchoe": {
+            "moisture": 50,
+            "ideal_min_temp": 60,
+            "ideal_max_temp": 85,
+            "ideal_sunlight": "Bright direct sunlight near south-facing window",
+            "description": "Succulent with vibrant small flowers",
+            "ideal_water": 10,
+            "ideal_min_ph": 6.0,
+            "ideal_max_ph": 6.5
+        }
     }
 }

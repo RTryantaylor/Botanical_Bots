@@ -4,16 +4,27 @@
     padding: 1rem;
 }
 
-.left-screen-flex,
-.right-screen-flex {
+.left-screen-flex {
     flex: 1;
     display: flex;
     flex-direction: column;
     padding: 1rem;
 }
 
-.left-screen-flex {
-    gap: 10px;
+.right-screen-flex {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.description-flex {
+    display: flex;
+    gap: 50px;
+}
+
+.individual-description-flex {
+    flex: 1;
 }
 
 .plant-selector {

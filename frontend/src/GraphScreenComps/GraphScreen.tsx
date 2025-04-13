@@ -34,8 +34,8 @@ function GraphScreen() {
         const fetchData = () => {
           const url =
             graphType === "today"
-              ? "http://192.168.1.197:8085/get_today_graph"
-              : "http://192.168.1.197:8085/get_week_graph";
+              ? "http://192.168.1.159:8085/get_today_graph"
+              : "http://192.168.1.159:8085/get_week_graph";
       
           axios.get(url)
             .then(res => {
