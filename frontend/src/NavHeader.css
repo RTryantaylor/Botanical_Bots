@@ -2,9 +2,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1a1a1a;
+    background-color: #885920;
     color: white;
-    padding: 1rem 2rem;
+    padding: 1.5rem 2rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -20,7 +20,7 @@
 }
 
 .nav-item:hover {
-    color: #00ff99;
+    color: #30a31b;
 }
 
 .nav-right {

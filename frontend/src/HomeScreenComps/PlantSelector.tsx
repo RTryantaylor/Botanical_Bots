@@ -52,9 +52,31 @@ function PlantSelector({ plantTypes, onSelect, selected }: Props) {
     return (
         <div className="plant-selector">
             <Select
-            options={options}
-            value={selected}
-            onChange={handleChange}
+                options={options}
+                value={selected}
+                onChange={handleChange}
+                styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      minHeight: '30px',
+                      fontSize: '14px',
+                    }),
+                    menu: (provided) => ({
+                      ...provided,
+                      maxHeight: '100px',
+                      overflow: 'hidden', // important: avoid scroll conflict
+                    }),
+                    menuList: (provided) => ({
+                      ...provided,
+                      maxHeight: '100px', // THIS is what makes it scrollable
+                      overflowY: 'auto',
+                    }),
+                    option: (provided) => ({
+                      ...provided,
+                      fontSize: '14px',
+                      padding: '6px 10px',
+                    }),
+                }}                  
             />
         </div>
     );

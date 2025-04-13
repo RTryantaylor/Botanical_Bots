@@ -114,12 +114,20 @@ function HomeScreen() {
   return (
     <div className="whole-screen-flex">
       <div className="left-screen-flex">
-        <img 
-          src={selectedPlant ? plantImageMap[selectedPlant.value] : "/plant_images/default_plant.webp"} 
-          alt="Plant" 
-          width="300" 
-          height="400" 
-        />
+        <div>
+          <img 
+            src={selectedPlant ? plantImageMap[selectedPlant.value] : "/plant_images/default_plant.webp"} 
+            alt="Plant" 
+            width="300" 
+            height="400"
+            style={{ border: "2px solid #885920", borderRadius: "8px" }} 
+          />
+          <div style={{ width: "300px", textAlign: "center" }}>
+            {selectedPlant && (
+              <div>{selectedPlant.description}</div>
+            )}
+          </div>
+        </div>
         <PlantSelector
           plantTypes={plantTypes}
           onSelect={handlePlantSelect}
@@ -128,32 +136,36 @@ function HomeScreen() {
 
       </div>
       <div className="right-screen-flex">
-        <div className="description-flex">
-          <div className="individual-description-flex">
-            <div><b>Sensor Temperature:</b> {sensorData.temp.toFixed(1)}</div>
-            <div><b>Sensor PH:</b> {sensorData.ph}</div>
-            <div><b>Sensor Moisture:</b> {sensorData.moisture}</div>
-            <div><b>Sensor Light:</b> {sensorData.light}</div>
-          </div>
-          <div className="individual-description-flex">
-            {selectedPlant && (
-              <div><b>Ideal Temperature: </b>{selectedPlant.ideal_min_temp}°F–{selectedPlant.ideal_max_temp}°F</div>
-            )}
-            {selectedPlant && (
-              <div><b>Ideal PH: </b>{selectedPlant.ideal_min_ph}–{selectedPlant.ideal_max_ph}</div>
-            )}
-            {selectedPlant && (
-              <div><b>Ideal Water: </b>{selectedPlant.ideal_water}mL per day</div>
-            )}
-            {selectedPlant && (
-              <div><b>Ideal Sunlight: </b>{selectedPlant.ideal_sunlight}</div>
-            )}
+        <div className="tooltip-wrapper">
+          <span className="info-button">i</span>
+          <div className="tooltip-box">
+            These sensor readings are being sent from our microcontroller<br />
+            that reads from a multitude of sensors gathering data from our<br />
+            Plant Buddy.
           </div>
         </div>
-        <div>
-            {selectedPlant && (
-              <div><b>Description: </b>{selectedPlant.description}</div>
-            )}
+        <div className="individual-description-flex">
+          <div><b>Sensor Temperature:</b> {sensorData.temp.toFixed(1)} °F</div>
+          <div><b>Sensor PH:</b> {sensorData.ph}</div>
+          <div><b>Sensor Moisture:</b> {sensorData.moisture} mL</div>
+          <div><b>Sensor Light:</b> {sensorData.light} lux</div>
+        </div>
+
+        <div className="separator" />
+
+        <div className="individual-description-flex">
+          {selectedPlant && (
+            <div><b>Ideal Temperature: </b>{selectedPlant.ideal_min_temp}°F–{selectedPlant.ideal_max_temp}°F</div>
+          )}
+          {selectedPlant && (
+            <div><b>Ideal PH: </b>{selectedPlant.ideal_min_ph}–{selectedPlant.ideal_max_ph}</div>
+          )}
+          {selectedPlant && (
+            <div><b>Ideal Water: </b>{selectedPlant.ideal_water}mL per day</div>
+          )}
+          {selectedPlant && (
+            <div><b>Ideal Sunlight: </b>{selectedPlant.ideal_sunlight}</div>
+          )}
         </div>
       </div>
     </div>

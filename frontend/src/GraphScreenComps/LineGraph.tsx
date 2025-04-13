@@ -70,11 +70,11 @@ function LineGraph({ data, yAxisKey, graphType, color = "#8884d8" }: LineGraphPr
           }
         />
         <Line
-          type="monotone"
-          dataKey={yAxisKey}
-          stroke={color}
-          strokeWidth={2}
-          dot={false}
+            type="monotone"
+            dataKey={yAxisKey}
+            stroke={color}
+            strokeWidth={2}
+            dot={false}
         />
       </LineChart>
     </ResponsiveContainer>

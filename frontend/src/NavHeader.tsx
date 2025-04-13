@@ -8,9 +8,9 @@ const NavHeader = ({ onNavigate }: { onNavigate: (screen: string) => void }) => 
         <strong>Botanical Bots</strong>
       </nav>
       <div className="nav-right">
-        <span className="nav-item" onClick={() => onNavigate("Home")}>Home</span>
-        <span className="nav-item" onClick={() => onNavigate("Graphs")}>Graphs</span>
-        <span className="nav-item" onClick={() => onNavigate("Information")}>Information</span>
+        <span className="nav-item" onClick={() => onNavigate("Home")}><b>Home</b></span>
+        <span className="nav-item" onClick={() => onNavigate("Graphs")}><b>Graphs</b></span>
+        <span className="nav-item" onClick={() => onNavigate("Information")}><b>Information</b></span>
       </div>
     </header>
   );
