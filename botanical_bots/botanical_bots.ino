@@ -9,7 +9,7 @@ const char* password = "cart2claim7apt";
 
 // ====== HTTP Server Endpoint ======
 const char* postServerName = "http://192.168.1.159:8085/put_sensor_data";
-const char* getServerName = "http://192.168.1.159:8008/get_settings";
+const char* getServerName = "http://192.168.1.159:8085/get_selected_plant";
 
 // ========== Pin Definitions ==========
 #define BUTTON_PIN     9
@@ -79,17 +79,17 @@ void loop() {
     updateSensorAverages();
   }
 
-  // === Send sensor data ===
+  // // === Send sensor data ===
   if (now - dataSendTimer >= dataSendInterval) {
     dataSendTimer = now;
     sendSensorData();
   }
 
   // === (optional) Get settings from server ===
-  // if (now - dataGetTimer >= dataGetInterval) {
-  //   dataGetTimer = now;
-  //   getData();
-  // }
+  if (now - dataGetTimer >= dataGetInterval) {
+    dataGetTimer = now;
+    getData();
+  }
 
   delay(10);  // Light yield
 }
@@ -98,8 +98,8 @@ void loop() {
 
 int readMoisture() {
   int val = analogRead(MOIST_ADC_PIN);
-  Serial.print("🌱 Moisture: ");
-  Serial.println(val);
+  // Serial.print("🌱 Moisture: ");
+  // Serial.println(val);
   return val;
 }
 
@@ -107,8 +107,8 @@ int readPh() {
   int val = analogRead(PH_ADC_PIN);
   float voltage_PH = (Vdd * (val / 4095.0));
   float finalPh = 7 + ((2.67 - voltage_PH)/0.25);
-  Serial.print("🧪 PH ADC: ");
-  Serial.println(finalPh);
+  // Serial.print("🧪 PH ADC: ");
+  // Serial.println(finalPh);
   // Reads PH from measured voltage
   return finalPh;
 }
@@ -119,9 +119,9 @@ float readTemp() {
   float resistance = readThermistorResistance(voltage);
   float temperatureC = calculateTemperatureC(resistance);
 
-  Serial.print("🌡️ Temp: ");
-  Serial.print(temperatureC, 2);
-  Serial.println(" °C");
+  // Serial.print("🌡️ Temp: ");
+  // Serial.print(temperatureC, 2);
+  // Serial.println(" °C");
   return temperatureC;
 }
 
@@ -219,13 +219,10 @@ void getData() {
       Serial.print("❌ JSON Parse Error: ");
       Serial.println(error.c_str());
     } else {
-      const char* message = jsonDoc["message"];
-      int moistureThreshold = jsonDoc["settings"]["moistureThreshold"];
+      int moistureThreshold = jsonDoc["moisture"];
 
-      Serial.print("📨 Message: ");
-      Serial.println(message);
       Serial.print("🌱 Moisture Threshold: ");
-      Serial.println(moistureThreshold);
+      Serial.println(moisture);
 
       // If you want to store these in global vars:
       // globalMoistureThreshold = moistureThreshold;
