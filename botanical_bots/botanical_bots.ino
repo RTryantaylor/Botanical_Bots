@@ -2,6 +2,8 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <math.h>  // Needed for log()
+#include <Wire.h>
+#include <DFRobot_RGBLCD1602.h>
 
 // ====== WiFi Credentials ======
 const char* ssid     = "Verizon_63D9RK";
@@ -37,6 +39,9 @@ const unsigned long dataSendInterval = 10000;
 unsigned long dataGetTimer = 0;
 const unsigned long dataGetInterval = 15000;
 
+unsigned long lcdTimer = 0;
+const unsigned long lcdInterval = 2000;
+
 // ========== Sensor Values ==========
 const int WINDOW_SIZE = 50;
 
@@ -62,8 +67,11 @@ const unsigned long dailyWaterCheckInterval = 12L * 3600000;  // 12 hours
 unsigned long lastWaterCheck = 0;
 bool watering = false;
 
-const float flowRateMLPerSecond = 10.0;
+const float flowRateMLPerSecond = 27.7;
 float lastWaterVolumeML = 0.0;
+
+// ====== LCD =======
+DFRobot_RGBLCD1602 lcd(/*RGBAddr*/0x2D ,/*lcdCols*/16,/*lcdRows*/2);  //16 characters and 2 lines of show
 
 // ========== Setup ==========
 void setup() {
@@ -78,6 +86,15 @@ void setup() {
     Serial.print(".");
   }
   Serial.println("\n✅ Connected to WiFi!");
+
+  // Setup LCD
+  Wire.begin(10, 8);
+  delay(100);
+  lcd.init();
+  lcd.display();
+  lcd.setRGB(255, 0, 255);
+  lcd.print("Plant Ready!");
+  delay(2000);
 }
 
 // ========== Main Loop ==========
@@ -103,7 +120,32 @@ void loop() {
     getData();
   }
 
+
+  updateLCD();
   delay(10);
+}
+
+// LCD Function
+void updateLCD() {
+  // Update display every loop
+  lcd.clear();
+  // Line 1: Temp and Moisture
+  lcd.setCursor(0, 0);
+  lcd.home();
+  lcd.print("T:");
+  lcd.print(temp, 1);
+  lcd.print("C M:");
+  lcd.print(moisture);
+
+  // Line 2: pH and Light
+  lcd.setCursor(0, 1);
+  lcd.print("pH:");
+  lcd.print(ph, 1); // Prints float with 1 decimal digit (e.g., 6.8)
+
+  lcd.print(" L:");
+  lcd.print(light);
+
+  delay(500);
 }
 
 // ========== Sensor Functions ==========
@@ -292,3 +334,5 @@ void updateSensorAverages() {
   temp     = tSum / sampleCount;
   light    = lSum / sampleCount;
 }
+
+
