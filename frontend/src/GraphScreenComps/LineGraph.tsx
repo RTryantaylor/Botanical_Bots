@@ -6,7 +6,7 @@ import {
 type LineGraphProps = {
   data: { timestamp: string; [key: string]: any }[];
   yAxisKey: string;
-  graphType: "today" | "week";
+  graphType: "today" | "week" | "hour";
   color?: string;
 };
 
@@ -33,19 +33,37 @@ function LineGraph({ data, yAxisKey, graphType, color = "#8884d8" }: LineGraphPr
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
-          dataKey="timestamp"
-          tickFormatter={(value: string) => {
-            if (graphType === "week") {
-              const date = new Date(value);
-              return date.toLocaleDateString("en-US", {
-                month: "short",
-                day: "2-digit",
-              });
+            dataKey="timestamp"
+            type="category"
+            tick={{ fontSize: 13 }}
+            ticks={
+                graphType === "hour"
+                ? Array.from({ length: 60 }, (_, i) => i).filter(i => i % 2 === 0).map(i => i.toString().padStart(2, "0"))
+                : graphType === "today"
+                ? Array.from({ length: 24 }, (_, i) => i).filter(i => i % 2 === 0).map(i => `${i.toString().padStart(2, "0")}:00`)
+                : undefined
             }
-            return value;
-          }}
         />
-        <YAxis tickFormatter={(value: number) => formatValue(value, yAxisKey)} />
+        <YAxis
+            tick={{ fontSize: 11 }}
+            tickFormatter={(value: number) => value.toFixed(1)} // just the number
+            label={{
+                value:
+                yAxisKey === "temp"
+                    ? "°F"
+                    : yAxisKey === "ph"
+                    ? "pH"
+                    : yAxisKey === "moisture"
+                    ? "%"
+                    : yAxisKey === "light"
+                    ? "lux"
+                    : "",
+                angle: -90,
+                position: "insideLeft",
+                offset: 10,
+                style: { fontSize: 12, fill: "#555" },
+            }}
+        />
         <Tooltip
           formatter={(value) =>
             typeof value === "number" ? formatValue(value, yAxisKey) : value

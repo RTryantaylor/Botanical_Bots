@@ -47,6 +47,15 @@ def put_sensor_data():
 
     return jsonify({"status": "OK"}), 200
 
+@app.route("/get_hour_graph", methods=['GET'])
+def get_hours_graph_entries():
+    """
+    Called by frontend returns values for each variable for each minute for the hour
+    """
+    with open("jsons/hours_sensor_data.json", 'r') as f:
+        j_data = json.load(f)
+
+    return j_data
 
 @app.route("/get_today_graph", methods=['GET'])
 def get_todays_graph_entries():
@@ -91,14 +100,14 @@ def set_selected_plant():
 
     with open("jsons/plant_types.json", 'w') as f:
         json.dump(j_data, f, indent=4)
-    
-    # send request to ESP32
-    # TODO...
 
     return jsonify({"status": "OK"}), 200 
 
 @app.route("/get_selected_plant", methods=['GET'])
 def get_selected_plant():
+    """
+    Called by ESP32 to get settings for curr selected plant
+    """
     with open("jsons/plant_types.json", 'r') as f:
         j_data = json.load(f)
     
@@ -106,9 +115,9 @@ def get_selected_plant():
     plant_types = j_data.get("types", {})
     for plant in plant_types:
         if plant == j_data["curr_selected"]:
-            return {plant: j_data["plant"]}
+            return {"moisture": plant_types[plant]["moisture"]}
     
-    return {}
+    return {"moisture": 50} # default
     
 
 if __name__ == "__main__":
