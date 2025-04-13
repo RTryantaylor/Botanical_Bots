@@ -4,7 +4,7 @@ import axios from "axios";
 
 import NavHeader from "./NavHeader";
 import HomeScreen from './HomeScreenComps/HomeScreen';
-import InformationScreen from './InformationScreenComps/InformationScreen';
+import AboutUsScreen from './AboutUsScreenComps/AboutUsScreen';
 import GraphScreen from './GraphScreenComps/GraphScreen';
 
 function App() {
@@ -15,8 +15,8 @@ function App() {
         return <HomeScreen />;
       case "Graphs":
         return <GraphScreen />;
-      case "Information":
-        return <InformationScreen />;
+      case "AboutUs":
+        return <AboutUsScreen />;
       default:
         return <h2>Page Not Found</h2>;
     }

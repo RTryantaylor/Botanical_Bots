@@ -19,7 +19,7 @@ const formatValue = (value: number, key: string): string => {
     case "ph":
       return `${formatted} pH`;
     case "moisture":
-      return `${formatted} %`;
+      return `${formatted}% VWC`;
     case "light":
       return `${formatted} lux`;
     default:
@@ -54,7 +54,7 @@ function LineGraph({ data, yAxisKey, graphType, color = "#8884d8" }: LineGraphPr
                     : yAxisKey === "ph"
                     ? "pH"
                     : yAxisKey === "moisture"
-                    ? "%"
+                    ? "% VWC"
                     : yAxisKey === "light"
                     ? "lux"
                     : "",

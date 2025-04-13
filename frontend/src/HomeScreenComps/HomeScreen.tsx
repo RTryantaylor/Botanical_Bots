@@ -147,7 +147,7 @@ function HomeScreen() {
         <div className="individual-description-flex">
           <div><b>Sensor Temperature:</b> {sensorData.temp.toFixed(1)} °F</div>
           <div><b>Sensor PH:</b> {sensorData.ph}</div>
-          <div><b>Sensor Moisture:</b> {sensorData.moisture} mL</div>
+          <div><b>Sensor Moisture:</b> {sensorData.moisture}% VWC</div>
           <div><b>Sensor Light:</b> {sensorData.light} lux</div>
         </div>
 

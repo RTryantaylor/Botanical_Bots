@@ -25,9 +25,10 @@ def graph_sensor_data(r_data):
 
     # --- HOURS SENSOR DATA HANDLING ---
     if (
-        (hours_j_data.get("date") == current_date_str and hours_j_data.get("hour") == current_hour)
-        or (hours_j_data.get("date") == "" and hours_j_data.get("hour") == "")
+        (hours_j_data["date"] == current_date_str and hours_j_data["hour"] == current_hour)
+        or (hours_j_data["date"] == "" and hours_j_data["hour"] == "")
     ):
+        print("IN IF")
         # Still in the same hour — just log a new minute entry
         hours_j_data["date"] = current_date_str
         hours_j_data["hour"] = current_hour
@@ -46,6 +47,7 @@ def graph_sensor_data(r_data):
                 json.dump(hours_j_data, f, indent=4)
 
     elif hours_j_data.get("date") == current_date_str and hours_j_data.get("hour") != current_hour:
+        print("IN ELIF")
         # Hour has changed → average and dump into today's data
         entries = hours_j_data.get("entries", {})
         totals = { "moisture": 0, "ph": 0, "temp": 0, "light": 0 }
@@ -123,6 +125,22 @@ def graph_sensor_data(r_data):
                     "light": r_data.get("light"),
                 }
             }
+        }
+
+        with open("jsons/hours_sensor_data.json", "w") as f:
+            json.dump(hours_j_data, f, indent=4)
+    else:
+        # hour and day wrong!
+        # wipe hour_sensor_data.json and update it
+        print("IN ELSE")
+        hours_j_data["date"] = current_date_str
+        hours_j_data["hour"] = current_hour
+
+        hours_j_data["entries"][current_minute] = {
+            "moisture": r_data.get("moisture"),
+                "ph": r_data.get("ph"),
+                "temp": r_data.get("temp"),
+                "light": r_data.get("light"),
         }
 
         with open("jsons/hours_sensor_data.json", "w") as f:

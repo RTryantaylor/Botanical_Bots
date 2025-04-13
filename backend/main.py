@@ -34,7 +34,7 @@ def put_sensor_data():
         j_data = json.load(f)
 
     # moves data from request json to local json
-    j_data["moisture"] = r_data.get("moisture")
+    j_data["moisture"] = ((4096 - r_data.get("moisture")) / 200)
     j_data["ph"] = r_data.get("ph")
     j_data["temp"] = (r_data.get("temp") * 9/5) + 32 # converting to fahrenheit
     j_data["light"] = r_data.get("light")
