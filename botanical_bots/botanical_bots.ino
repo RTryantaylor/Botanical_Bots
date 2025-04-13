@@ -54,6 +54,17 @@ float ph = 0;
 float temp = 0;
 int light = 0;
 
+// === Water Flow ===
+const int moistureThreshold = 2800;                        // Adjustable!
+const unsigned long waterDuration = 5000;                  // 5s watering
+const unsigned long dailyWaterCheckInterval = 12L * 3600000;  // 12 hours
+
+unsigned long lastWaterCheck = 0;
+bool watering = false;
+
+const float flowRateMLPerSecond = 10.0;
+float lastWaterVolumeML = 0.0;
+
 // ========== Setup ==========
 void setup() {
   Serial.begin(115200);
@@ -136,16 +147,34 @@ int readLight() {
 
 // ========== Watering Logic ==========
 void checkWatering() {
-  const int moistureThreshold = 1180;
-  if (moisture < moistureThreshold) {
-    Serial.println("Moisture: ");
-    Serial.print(moisture);
-    Serial.println("💧 Moisture low, watering...");
-    digitalWrite(MOTOR_IO_PIN, HIGH);
-    delay(100);  // Quick pump pulse
-    digitalWrite(MOTOR_IO_PIN, LOW);
-  } else {
-    digitalWrite(MOTOR_IO_PIN, LOW);
+  if (now - lastWaterCheck >= dailyWaterCheckInterval) {
+    lastWaterCheck = now;
+
+    Serial.println("🕒 Running daily water check...");
+
+    Serial.print("🌱 Moisture (avg): ");
+    Serial.println(moisture);
+
+    if (moisture < moistureThreshold) {
+      Serial.println("💧 Moisture low — watering...");
+      watering = true;
+
+      digitalWrite(MOTOR_IO_PIN, HIGH);
+      delay(waterDuration);  // Blocking is OK here
+      digitalWrite(MOTOR_IO_PIN, LOW);
+
+      watering = false;
+
+      // 🌊 Calculate volume dispensed
+      lastWaterVolumeML = (flowRateMLPerSecond * (waterDuration / 1000.0));
+      Serial.print("💦 Water dispensed: ");
+      Serial.print(lastWaterVolumeML);
+      Serial.println(" mL");
+
+    } else {
+      Serial.println("🌿 Moisture sufficient — no water needed.");
+      lastWaterVolumeML = 0.0;
+    }
   }
 }
 
