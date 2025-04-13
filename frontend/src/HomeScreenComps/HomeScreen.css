@@ -1,0 +1,95 @@
+/* ----- Layout Flex Containers ----- */
+.whole-screen-flex {
+    display: flex;
+    height: 500px;
+    /* fixed: was "500p" */
+    padding: 1rem;
+}
+
+.left-screen-flex {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 20px;
+}
+
+.right-screen-flex {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 10px;
+}
+
+.individual-description-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ----- Plant Selector Styling ----- */
+.plant-selector {
+    max-width: 300px;
+}
+
+/* ----- Horizontal Line Separator ----- */
+.separator {
+    height: 1px;
+    background-color: #ccc;
+    width: 100%;
+    margin: 4px 0;
+}
+
+/* ----- Info Button + Custom Tooltip ----- */
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+    align-self: flex-start;
+    /* keeps it flush left */
+}
+
+.info-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #15a13f;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+.info-button:hover {
+    background-color: #0f6e2b;
+}
+
+.tooltip-box {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 999;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.tooltip-wrapper:hover .tooltip-box {
+    visibility: visible;
+    opacity: 1;
+}

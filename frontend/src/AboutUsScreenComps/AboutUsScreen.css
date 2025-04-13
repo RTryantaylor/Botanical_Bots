@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+    background-color: #f9f9f9;
+}
+
+.bio-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    max-width: 700px;
+}
+
+.bio-card h2 {
+    margin: 0 0 0.3rem;
+    font-size: 1.3rem;
+    color: #333;
+}
+
+.bio-card .meta {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 0.8rem;
+}
+
+.bio-card .label {
+    font-weight: bold;
+    color: #444;
+}
+
+.bio-card p {
+    line-height: 1.6;
+    margin: 0.5rem 0 0;
+}
