@@ -77,6 +77,7 @@ void loop() {
   if (now - sensorReadTimer >= sensorReadInterval) {
     sensorReadTimer = now;
     updateSensorAverages();
+    checkWatering();
   }
 
   // // === Send sensor data ===
@@ -91,7 +92,7 @@ void loop() {
     getData();
   }
 
-  delay(10);  // Light yield
+  delay(10);
 }
 
 // ========== Sensor Functions ==========
@@ -134,9 +135,11 @@ int readLight() {
 }
 
 // ========== Watering Logic ==========
-void checkWatering(int moistureVal) {
-  const int moistureThreshold = 3000;
-  if (moistureVal < moistureThreshold) {
+void checkWatering() {
+  const int moistureThreshold = 1180;
+  if (moisture < moistureThreshold) {
+    Serial.println("Moisture: ");
+    Serial.print(moisture);
     Serial.println("💧 Moisture low, watering...");
     digitalWrite(MOTOR_IO_PIN, HIGH);
     delay(100);  // Quick pump pulse
@@ -222,10 +225,7 @@ void getData() {
       int moistureThreshold = jsonDoc["moisture"];
 
       Serial.print("🌱 Moisture Threshold: ");
-      Serial.println(moisture);
-
-      // If you want to store these in global vars:
-      // globalMoistureThreshold = moistureThreshold;
+      Serial.println(moistureThreshold);
     }
   } else {
     Serial.print("❌ GET failed, HTTP code: ");
